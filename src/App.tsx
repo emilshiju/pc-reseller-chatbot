@@ -1,11 +1,11 @@
-import ChatbotInterface from "./pages/Interface"
+import Chatbot from "./pages/chatBot/Chatbot"
 
 function App() {
 
 
   return (
     <>
-      <ChatbotInterface />
+      <Chatbot />
     </>
   )
 }

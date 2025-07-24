@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { MessageSquare, RotateCcw } from "lucide-react";
-import { Bot, User } from "lucide-react";
+import TypingIndicator from "../../components/chatBot/TypingIndicator";
+import ChatMessage from "../../components/chatBot/ChatMessage";
+import { Sun, Moon } from 'lucide-react';
+import { useTheme } from "../../context/Themecontext";
 
 interface Message {
   id: string;
@@ -33,6 +36,15 @@ const Chatbot = () => {
   const [inputValue, setInputValue] = useState("");
   const [newMessageId, setNewMessageId] = useState<string | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  
+
+   const themeContext = useTheme();
+  
+ 
+
+  const {  toggleTheme } = themeContext;
+
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -96,95 +108,41 @@ const Chatbot = () => {
     }
   };
 
-  // Avatar component
-  const Avatar = ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div className={`flex items-center justify-center rounded-full h-8 w-8 overflow-hidden ${className}`}>
-      {children}
-    </div>
-  );
-
-  // Message component
-  const Message = ({ message, isUser, timestamp, isAnimating }: {
-    message: string;
-    isUser: boolean;
-    timestamp: Date;
-    isAnimating?: boolean;
-  }) => (
-    <div className={`flex gap-3 p-4 ${isUser ? "justify-end" : "justify-start"} ${isAnimating ? "animate-fade-in" : ""}`}>
-      {!isUser && (
-        <Avatar className="border border-gray-200 bg-blue-100">
-          {/* <span className="text-blue-600 text-sm">AI</span> */}
-           <Bot className="h-4 w-4" />
-        </Avatar>
-      )}
-      
-      <div className={`flex flex-col gap-1 max-w-[80%] ${isUser ? "items-end" : ""}`}>
-        <div className={`px-4 py-3 rounded-2xl ${isUser ? "bg-blue-600 text-white" : "bg-gray-100 border border-gray-200"}`}>
-          <p className="text-sm leading-relaxed whitespace-pre-wrap">{message}</p>
-        </div>
-        <span className="text-xs text-gray-500 px-2">
-          {timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        </span>
-      </div>
-      
-      {isUser && (
-        <Avatar className="border border-gray-200 bg-blue-600">
-          {/* <span className="text-white text-sm">You</span> */}
-            <User className="h-4 w-4" />
-        </Avatar>
-      )}
-    </div>
-  );
-
-  // Typing indicator component
-  const TypingIndicator = () => (
-    <div className="flex gap-3 p-4">
-      <Avatar className="border border-gray-200 bg-blue-100">
-        <span className="text-blue-600 text-sm">AI</span>
-      </Avatar>
-      <div className="flex flex-col gap-1">
-        <div className="bg-gray-100 px-4 py-3 rounded-2xl border border-gray-200 w-16">
-          <div className="flex gap-1">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" 
-                style={{ animationDelay: `${i * 0.15}s` }} />
-            ))}
-          </div>
-        </div>
-        <span className="text-xs text-gray-500 px-2">typing...</span>
-      </div>
-    </div>
-  );
+  
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
+    <div className="flex flex-col h-screen bg-gray-50  dark:bg-black ">
       {/* Header */}
-      <div className="border-b border-gray-200 bg-white/80 backdrop-blur-sm p-4">
-        <div className="flex items-center justify-between max-w-4xl mx-auto">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-600 rounded-lg">
-              <MessageSquare className="h-5 w-5 text-white" />
-            </div>
-            <div>
-              <h1 className="text-lg font-semibold">AI Assistant</h1>
-              <p className="text-sm text-gray-500">Always here to help</p>
-            </div>
-          </div>
-          
-          <button
-            onClick={handleReset}
-            className="p-2 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-100"
-          >
-            <RotateCcw className="h-4 w-4" />
-          </button>
-        </div>
+      
+
+      <div className="border-b border-gray-200 bg-white/80 backdrop-blur-sm p-4 dark:border-border dark:bg-gradient-chat  ">
+  <div className="flex items-center justify-between max-w-4xl mx-auto">
+    <div className="flex items-center gap-3">
+      <div className="p-2 bg-blue-600  dark:bg-gradient-primary rounded-lg">
+        <MessageSquare className="h-5 w-5 text-white " />
       </div>
+      <div>
+        <h1 className="text-lg font-semibold dark:text-white">AI Assistant</h1>
+        <p className="text-sm text-gray-500 dark:text-white">Always here to help</p>
+      </div>
+    </div>
+    
+    <button
+      onClick={toggleTheme}
+      className="relative flex items-center justify-center h-10 w-10 rounded-full transition-all duration-300 hover:scale-110 hover:bg-gray-200 dark:hover:bg-gray-700"
+    >
+      <Sun className="absolute h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+      <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+      <span className="sr-only">Toggle theme</span>
+    </button>
+  </div>
+</div>
 
       {/* Messages */}
-      <div ref={scrollAreaRef} className="flex-1 overflow-y-auto">
-        <div className="max-w-4xl mx-auto py-4">
+      <div ref={scrollAreaRef} className="flex-1 overflow-y-auto    dark:bg-message-primay">
+        <div className="max-w-4xl mx-auto py-4 ">
           {messages.map((message) => (
-            <Message
+            <ChatMessage
               key={message.id}
               message={message.text}
               isUser={message.isUser}
@@ -197,7 +155,7 @@ const Chatbot = () => {
       </div>
 
       {/* Input */}
-      <div className="border-t border-gray-200 bg-white p-4">
+      <div className="border-t border-gray-200 bg-white p-4 dark:border-border dark:bg-gradient-chat">
         <form onSubmit={handleSubmit} className="flex gap-3 items-end max-w-4xl mx-auto">
           <div className="flex-1 relative">
             <input
@@ -206,14 +164,14 @@ const Chatbot = () => {
               onKeyDown={handleKeyDown}
               placeholder="Type your message..."
               disabled={isTyping}
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200  dark:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50"
             />
           </div>
           
           <button
             type="submit"
             disabled={!inputValue.trim() || isTyping}
-            className="p-3 bg-blue-600 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700"
+            className="p-3 bg-blue-600 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 dark:bg-gradient-primary dark:hover:dark:bg-gradient-primary"
           >
             <span className="text-sm">Send</span>
           </button>
