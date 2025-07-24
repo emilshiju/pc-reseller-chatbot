@@ -29,6 +29,9 @@
 
  --color-scrollbar-dark: oklch(8.5% 0.004 260); 
 
+  /* 👉 Add this line for #212121 */
+  --color-charcoal: oklch(0.2457 0.003 196.96);
+
 
 }
 

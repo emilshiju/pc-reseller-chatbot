@@ -1,35 +1,60 @@
- import Avatar from "../ui/Avatar";
- import { Bot ,User } from "lucide-react";
+ import type { dataType } from "../../types/chatbotTypes";
 
- const ChatMessage = ({ message, isUser, timestamp, isAnimating }: {
-    message: string;
-    isUser: boolean;
-    timestamp: Date;
-    isAnimating?: boolean;
-  }) => (
+ type ChatMessageProps = {
+  message: string | dataType[];
+  isUser: boolean;
+  timestamp: Date;
+  isAnimating?: boolean;
+};
+
+
+ const ChatMessage = ({ message, isUser, timestamp, isAnimating }: ChatMessageProps) => (
     <div className={`flex gap-3 p-4 ${isUser ? "justify-end" : "justify-start"} ${isAnimating ? "animate-fade-in" : ""}`}>
-      {!isUser && (
-        <Avatar className="border border-gray-200 bg-blue-100">
-          {/* <span className="text-blue-600 text-sm">AI</span> */}
-           <Bot className="h-4 w-4" />
-        </Avatar>
-      )}
+    
+
+   
+
+   {typeof message === "string" ? (
+  
+   <div className="p-4 rounded-xl border border-gray-200 dark:border-border bg-white dark:bg-charcoal mb-2">
+    <p className="text-md leading-relaxed whitespace-pre-wrap dark:text-white">
+      {message}
+    </p>
+  </div>
+) :
+  <div className="flex flex-col gap-1 ">
+  {message.map((data: dataType, index: number) => (
+    <div 
+      key={data._id || index}
+      className="p-4 rounded-lg border border-gray-200 dark:border-border bg-white dark:bg-charcoal mb-2"
+    >
+      <h3 className="text-lg font-medium dark:text-white">{data.name}</h3>
       
-      <div className={`flex flex-col gap-1 max-w-[80%]  ${isUser ? "items-end" : ""}`}>
-        <div className={`px-4 py-3 rounded-2xl ${isUser ? "bg-gray-100  " : "bg-gray-100  border border-gray-200"}`}>
-          <p className="text-sm leading-relaxed whitespace-pre-wrap ">{message}</p>
+      <p className="mt-2 text-gray-600 dark:text-gray-300 whitespace-pre-wrap">
+        {data.content}
+      </p>
+      
+      {data.url && (
+        <div className="mt-3">
+          <a 
+            href={data.url} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-blue-600 dark:text-blue-400 hover:underline"
+          >
+            Visit website →
+          </a>
         </div>
-        <span className="text-xs text-gray-500 px-2">
-          {timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        </span>
-      </div>
-      
-      {isUser && (
-        <Avatar className="border border-gray-200  bg-blue-100">
-          {/* <span className="text-white text-sm">You</span> */}
-            <User className="h-4 w-4" />
-        </Avatar>
       )}
+    </div>
+  ))}
+</div>
+}
+
+
+        
+          {/* <p className="text-md leading-relaxed whitespace-pre-wrap  dark:text-white">{message}</p> */}
+        
     </div>
   );
 
