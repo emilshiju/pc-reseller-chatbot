@@ -6,6 +6,8 @@ import { Sun, Moon } from 'lucide-react';
 import { useTheme } from "../../context/ThemeContext";
 import { fetchMatchingRecords, getAllDataApi } from "../../services/api/chatBot/chatbotHandler";
 import type { MessageType } from "../../types/chatbotTypes";
+import toast from 'react-hot-toast';
+
 
 const AI_RESPONSES = [
     "Get all PC resellers from Chile",
@@ -30,12 +32,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState<MessageType[]>([
     {
       id: "1",
-      data: [{
-        _id: '688225e02d4ed0fc1352fa0d',
-        name: 'SONDA S.A.',
-        url: 'https://www.cpnnetsecurity.com/',
-        content: "SONDA S.A. is Latin America's largest IT service provider, with a strong hardware distribution arm in Chile. They handle IT consulting, infrastructure, and digital services. Their clientele includes government, retail, and financial sectors. SONDA is listed on the Santiago Stock Exchange. The company is recognized for innovation and integration."
-      }],
+      data: 'Hi , how can I help you ?',
       isUser: false,
       timestamp: new Date(),
     },
@@ -86,8 +83,10 @@ const Chatbot = () => {
 try {
   console.log("second");
   const response = isAIResponse ? await getAllDataApi() : await fetchMatchingRecords(inputValue);
+  console.log(response)
   
-  if (response.success) {
+  if (response.success&&response.status) {
+
     console.log(response.data);
     setMessages(prev => [
       ...prev,
@@ -100,9 +99,18 @@ try {
     ]);
   }
 
+
+  if(response.success&&response.status==false){
+    toast.error(response.message)
+  }
+
+  if(response.success==false){
+    toast.error(response.message)
+  }
+
   setInputValue('')
 } catch (error) {
-  // Handle error
+  toast.error("try again later")
 }
 
 
@@ -110,7 +118,6 @@ try {
 
 
 }
-
 
 
   

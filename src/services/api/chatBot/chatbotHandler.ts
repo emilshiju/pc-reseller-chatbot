@@ -15,7 +15,8 @@ export const getAllDataApi=async()=>{
          return {
       success: resAllDataApi.success,
       data:resAllDataApi.data,
-      message: resAllDataApi.message
+      message: resAllDataApi.message,
+      status:resAllDataApi.status
    
     };
 
@@ -24,7 +25,7 @@ export const getAllDataApi=async()=>{
 console.log("error")
          const data = getApiErrorMessage(error)
 
-    return { success: false, message: data };
+    return { success: false, message: data  };
 
     }
 }
@@ -44,8 +45,8 @@ export const fetchMatchingRecords=async(value:string)=>{
          return {
       success: resAllDataApi.success,
       data:resAllDataApi.data,
-      message: resAllDataApi.message
-   
+      message: resAllDataApi.message,
+      status:resAllDataApi.status
     };
 
 
