@@ -73,7 +73,7 @@ const Chatbot = () => {
 ])
 
 
- console.log('first')
+
 
 
  const isAIResponse = AI_RESPONSES.some(response =>
@@ -143,9 +143,12 @@ try {
       onClick={toggleTheme}
       className="relative flex items-center justify-center h-10 w-10 rounded-full transition-all duration-300 hover:scale-110 hover:bg-gray-200 dark:hover:bg-gray-700"
     >
-      <Sun className="absolute h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-      <span className="sr-only">Toggle theme</span>
+      <Sun className="absolute h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-gray-900 dark:text-white" />
+  <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-gray-900 dark:text-white" />
+  
+      {/* <Sun className="absolute h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+      <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" /> */}
+      {/* <span className="sr-only">Toggle theme</span> */}
     </button>
   </div>
 </div>
@@ -162,7 +165,7 @@ try {
               isAnimating={message.id === newMessageId}
             />
           ))}
-          {isTyping && <TypingIndicator />}
+          {/* {isTyping && <TypingIndicator />} */}
         </div>
       </div>
 
@@ -175,7 +178,7 @@ try {
               onChange={(e) => setInputValue(e.target.value)}
               // onKeyDown={handleKeyDown}
               placeholder="Type your message..."
-              disabled={isTyping}
+              // disabled={isTyping}
               className="w-full px-4 py-2.5 rounded-xl border border-gray-200  dark:border-border  dark:bg-charcoal dark:text-white  focus:outline-none focus:ring-0"
             />
           </div>
@@ -183,7 +186,7 @@ try {
           <button
             type="submit"
             onClick={handleSubmit}
-            disabled={!inputValue.trim() || isTyping}
+            disabled={!inputValue.trim()}
             className="p-3 bg-blue-600 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 dark:bg-gradient-primary dark:hover:dark:bg-gradient-primary"
           >
             <span className="text-sm">Send</span>
